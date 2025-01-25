@@ -1,7 +1,9 @@
+import LoginForm from "@/components/card/LoginForm";
+
 export default function Login() {
     return (
         <div>
-            <h1 className="bg-window">Login</h1>
+            <LoginForm className="" />
         </div>
     );
 }
