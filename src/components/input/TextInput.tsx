@@ -5,15 +5,19 @@ export type TextInputProps = {
     name: string,
     value?: string;
     placeholder?: string;
+    type?: 'text' | 'password' | 'email';
+    isRequired?: boolean;
     onChange?: (value: string) => void;
 };
 
 export default function TextInput(props: TextInputProps) {
-    const { className, value, placeholder, onChange } = props;
+    const { className, name, value, placeholder, type, isRequired, onChange } = props;
 
     return (
         <input
-            type="text"
+            type={type ?? 'text'}
+            name={name}
+            required={isRequired}
             className={clsx(
                 "p-4 m-1 bg-transparent dark:shadow-black shadow-inner focus:outline-none rounded-lg",
                 className,
