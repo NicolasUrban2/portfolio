@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Header from "@/components/header/Header";
 
 export const metadata: Metadata = {
   title: "Portfolio",
@@ -16,6 +17,7 @@ export default function RootLayout({
       <body
         className={`antialiased bg-background text-foreground`}
       >
+        <Header />
         <main>
           {children}
         </main>
