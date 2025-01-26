@@ -4,7 +4,14 @@ import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-export async function login(formData: FormData) {
+const INVALID_CREDENTIALS = 'invalid_credentials';
+
+export type LoginActionState = {
+    email: string;
+    error: null | string;
+};
+
+export async function login(state: LoginActionState, formData: FormData) {
     const supabase = await createClient();
 
     // TODO: validate data
@@ -13,13 +20,18 @@ export async function login(formData: FormData) {
         password: formData.get('password') as string,
     };
 
-    console.log(formData, data);
-
     const { error } = await supabase.auth.signInWithPassword(data);
 
-    if( error ) {
-        console.log(error);
-        redirect('/error');
+    if (error && error.code === INVALID_CREDENTIALS) {
+        return {
+            email: data.email,
+            error: 'Invalid credentials',
+        };
+    } else if (error) {
+        return {
+            email: data.email,
+            error: 'An error occurred',
+        };
     }
 
     revalidatePath('/', 'layout');
