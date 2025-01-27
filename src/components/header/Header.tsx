@@ -31,6 +31,7 @@ export default function Header(props: HeaderProps) {
                 user ? (
                     <>
                         <p>{user.email ?? 'no email'}</p>
+                        <Button href="/dashboard">Dashboard</Button>
                         <Button onPress={logout}>Logout</Button>
                     </>
                 ) : <Button href="/login">Login</Button>

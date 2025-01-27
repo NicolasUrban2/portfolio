@@ -1,6 +1,7 @@
-import { publicPages } from '@/security/authorizations';
-import { createServerClient } from '@supabase/ssr'
-import { NextResponse, type NextRequest } from 'next/server'
+import { authorizations } from '@/security/authorizations';
+import { createServerClient } from '@supabase/ssr';
+import { NextResponse, type NextRequest } from 'next/server';
+import { getUserRoles } from './resources/getUserRoles';
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -38,11 +39,12 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  const isPublicRoute = publicPages.some((route) => request.nextUrl.pathname === route);
-  if (
-    !user &&
-    !isPublicRoute
-  ) {
+  const roles = user ? await getUserRoles(user) : [];
+
+  const requestedPath = request.nextUrl.pathname;
+  const isAuthorized = Object.keys(authorizations).includes(requestedPath) ? authorizations[requestedPath](roles) : false;
+
+  if (!isAuthorized) {
     // no user, respond by redirecting the user to the login page
     const url = request.nextUrl.clone()
     url.pathname = '/login'
