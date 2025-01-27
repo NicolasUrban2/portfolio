@@ -1,8 +1,10 @@
-export default async function CVEditorPage() {
+import Button from "@/components/button/Button";
+
+export default async function DashboardPage() {
     return (
-        <div className="flex flex-col items-center justify-center h-screen">
-            <h1 className="text-4xl font-bold">Dashboard</h1>
-            <p>Coming soon...</p>
+        <div>
+            <h1>Dashboard</h1>
+            <Button href="/dashboard/portfolio-contents">Portfolio contents</Button>
         </div>
     );
 }
