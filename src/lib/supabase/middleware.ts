@@ -1,4 +1,4 @@
-import { authorizations } from '@/security/authorizations';
+import { publicPages } from '@/security/authorizations';
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
@@ -38,10 +38,10 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  const isProtectedRoute = authorizations.some((route) => request.nextUrl.pathname.startsWith(route));
+  const isPublicRoute = publicPages.some((route) => request.nextUrl.pathname === route);
   if (
     !user &&
-    isProtectedRoute
+    !isPublicRoute
   ) {
     // no user, respond by redirecting the user to the login page
     const url = request.nextUrl.clone()
