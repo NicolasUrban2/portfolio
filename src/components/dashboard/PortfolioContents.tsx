@@ -1,5 +1,6 @@
-import { PortfolioContentsResource } from "@/lib/supabase/resources/PortfolioContentsResource";
 import clsx from "clsx";
+import { PortfolioContentsEdit } from "../card/PortfolioContentEdit";
+import { createClient } from "@/lib/supabase/server";
 
 export type PortfolioContentsProps = {
     className?: string,
@@ -8,20 +9,24 @@ export type PortfolioContentsProps = {
 export async function PortfolioContents(props: PortfolioContentsProps) {
     const { className } = props;
 
-    const portfolioContents = await PortfolioContentsResource.getList();
+    const supabase = await createClient();
+    const { data, error } = await supabase.from('portfolio_contents').select('*').order('id', { ascending: true });
 
     return (
         <div className={clsx(
-            'bg-window',
+            'flex flex-col gap-8',
             className
         )}>
-            <h1 className="text-4xl font-bold">Portfolio contents</h1>
-            {portfolioContents !== null && portfolioContents.map((portfolioContent) => (
-                <div key={portfolioContent.id} className="border-b border-gray-300">
-                    <h2 className="text-2xl font-bold">{portfolioContent.code}</h2>
-                    <p>{portfolioContent.content}</p>
-                </div>
-            ))}
+            {
+                error !== null ? <div>Error: {error.message}</div> : null
+            }
+            {data !== null ? data.map((portfolioContent) =>
+                <PortfolioContentsEdit
+                    key={portfolioContent.id}
+                    portfolioContent={portfolioContent}
+                />
+            ) :
+                <div>Loading...</div>}
         </div>
     );
 }

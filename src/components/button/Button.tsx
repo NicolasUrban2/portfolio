@@ -13,7 +13,7 @@ export default function Button(props: NavButtonProps) {
     const { className, href, onPress, children } = props;
 
     const classes = clsx(
-        "p-4 m-1 bg-transparent dark:shadow-black shadow-xl hover:shadow-md focus:shadow-inner rounded-lg",
+        "p-4 m-1 bg-transparent dark:shadow-black shadow-xl hover:shadow-md active:shadow-inner rounded-lg",
         className,
     );
 

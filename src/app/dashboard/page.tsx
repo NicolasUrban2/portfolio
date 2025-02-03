@@ -1,10 +1,7 @@
-import Button from "@/components/button/Button";
-
 export default async function DashboardPage() {
     return (
-        <div>
+        <div className="mt-20">
             <h1>Dashboard</h1>
-            <Button href="/dashboard/portfolio-contents">Portfolio contents</Button>
         </div>
     );
 }

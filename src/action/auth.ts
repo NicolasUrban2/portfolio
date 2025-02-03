@@ -14,7 +14,6 @@ export type LoginActionState = {
 export async function login(state: LoginActionState, formData: FormData) {
     const supabase = await createClient();
 
-    // TODO: validate data
     const data = {
         email: formData.get('email') as string,
         password: formData.get('password') as string,
