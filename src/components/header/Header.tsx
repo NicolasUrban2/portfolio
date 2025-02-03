@@ -20,7 +20,6 @@ function compareUsers(user: User | null, data: User | null) {
 
 export default function Header(props: HeaderProps) {
     const { className } = props;
-    console.log('render header');
 
     const [user, setUser] = useState<User | null>(null);
 

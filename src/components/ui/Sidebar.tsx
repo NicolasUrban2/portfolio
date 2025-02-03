@@ -1,6 +1,7 @@
-'use client';
+'use client'
 
 import clsx from "clsx";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { IconType } from "react-icons";
 import { FaAddressBook, FaBars, FaChartLine, FaHome } from "react-icons/fa";
@@ -26,10 +27,12 @@ export type SidebarProps = {
 export function Sidebar(props: SidebarProps) {
     const { className, links } = props;
 
-    const [isOpen, setIsOpen] = useState(window.innerWidth >= 768);
+    const [isOpen, setIsOpen] = useState(true);
 
-    window.addEventListener('resize', () => {
-        setIsOpen(window.innerWidth >= 768);
+    useEffect(() => {
+        window.addEventListener('resize', () => {
+            setIsOpen(window.innerWidth >= 768);
+        });
     });
 
     return <nav
@@ -59,13 +62,13 @@ export function Sidebar(props: SidebarProps) {
                         className="flex w-full"
                         key={label}
                     >
-                        <a
+                        <Link
                             className="px-6 py-4 w-full flex items-center gap-3 hover:bg-window"
                             href={href}
                         >
                             {icon !== undefined ? availableIcons[icon]({}) : null}
                             {label}
-                        </a>
+                        </Link>
                     </li>)}
                 </ul>
         }
