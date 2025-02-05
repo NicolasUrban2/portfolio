@@ -33,7 +33,9 @@ export function MainScene(props: MainSceneProps) {
         renderer.shadowMap.enabled = true;
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-        refContainer.current && refContainer.current.appendChild(renderer.domElement);
+        if (refContainer.current) {
+            refContainer.current.appendChild(renderer.domElement);
+        }
 
         /* Computer */
         let computer: THREE.Object3D | null = null;
@@ -78,7 +80,7 @@ export function MainScene(props: MainSceneProps) {
             renderer.setAnimationLoop(null);
         };
 
-    }, [props.height, props.width, refContainer]);
+    }, [props.height, props.width, refContainer, supabase]);
 
 
     return (
