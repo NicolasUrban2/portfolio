@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-export function cameraOrbit(camera: THREE.Camera, scene: THREE.Scene, container: HTMLDivElement|null): () => void {
+export function cameraOrbit(camera: THREE.Camera, scene: THREE.Scene, container: HTMLDivElement | null): () => void {
     const orbit = new THREE.Object3D();
     orbit.rotation.order = 'YXZ';
     orbit.position.set(0, 1, 0);
@@ -16,6 +16,7 @@ export function cameraOrbit(camera: THREE.Camera, scene: THREE.Scene, container:
         if (!isLocked) return; // Only move when locked
         rotateOrbit(event.movementY, event.movementX, orbit, camera);
     };
+    window.addEventListener("mousemove", onMouseMove);
 
     const onCLick = () => {
         container?.requestPointerLock();
@@ -36,7 +37,6 @@ export function cameraOrbit(camera: THREE.Camera, scene: THREE.Scene, container:
     };
     container?.addEventListener("keydown", onKeydown);
 
-    window.addEventListener("mousemove", onMouseMove);
 
     return () => {
         window.removeEventListener("mousemove", onMouseMove);
@@ -53,12 +53,12 @@ function rotateOrbit(x: number, y: number, orbit: THREE.Object3D, camera: THREE.
     const oldRotationX = orbit.rotation.x;
     orbit.rotateX(x * scaleX);
     const min = 0;
-    const max = (Math.PI / 2) - (Math.PI / 50);
+    const max = (Math.PI / 2);
 
     if (orbit.rotation.x < min || orbit.rotation.x > max) {
         orbit.rotation.x = oldRotationX;
     }
-    
+
     orbit.rotateY(y * scaleY);
     orbit.rotation.z = 0;
 
