@@ -20,13 +20,12 @@ export async function PortfolioContents(props: PortfolioContentsProps) {
             {
                 error !== null ? <div>Error: {error.message}</div> : null
             }
-            {data !== null ? data.map((portfolioContent) =>
-                <PortfolioContentsEdit
-                    key={portfolioContent.id}
-                    portfolioContent={portfolioContent}
-                />
-            ) :
-                <div>Loading...</div>}
+            {data !== null ? data.map((portfolioContent, index) => (
+                <div key={portfolioContent.id}>
+                    {index > 0 ? <hr /> : null}
+                    <PortfolioContentsEdit portfolioContent={portfolioContent} />
+                </div>
+            )) : <div>Loading...</div>}
         </div>
     );
 }

@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { TextRawContent } from "./TextRawContent";
 
 export type MainDescriptionProps = {
     className?: string;
@@ -15,8 +16,12 @@ export async function MainDescription({ className }: MainDescriptionProps) {
 
     return (
         <div className={`text-center ${className}`}>
-            <article className="text-lg">
-                {data[0].content}
+            <h1 className="text-4xl w-fit mx-auto">
+                Hello there
+            </h1>
+
+            <article className="mt-5 text-lg">
+                <TextRawContent content={data[0].content ?? ''} />
             </article>
         </div>
     );
