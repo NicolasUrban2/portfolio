@@ -40,18 +40,21 @@ export type Database = {
           content: string | null
           created_at: string
           id: number
+          locale: Database["public"]["Enums"]["locales"]
         }
         Insert: {
           code: string
           content?: string | null
           created_at?: string
           id?: number
+          locale?: Database["public"]["Enums"]["locales"]
         }
         Update: {
           code?: string
           content?: string | null
           created_at?: string
           id?: number
+          locale?: Database["public"]["Enums"]["locales"]
         }
         Relationships: []
       }
@@ -107,10 +110,21 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      authorize: {
+        Args: {
+          role: string
+        }
+        Returns: boolean
+      }
+      custom_access_token_hook: {
+        Args: {
+          event: Json
+        }
+        Returns: Json
+      }
     }
     Enums: {
-      [_ in never]: never
+      locales: "fr_FR" | "en"
     }
     CompositeTypes: {
       [_ in never]: never

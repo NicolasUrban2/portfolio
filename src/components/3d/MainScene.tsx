@@ -1,6 +1,6 @@
 'use client'
 
-import { cameraIso, cameraOrbit } from "@/lib/3d/cameraMovements";
+import { cameraIso } from "@/lib/3d/cameraMovements";
 import { getComputer } from "@/lib/3d/computer";
 import { getMainPlane } from "@/lib/3d/plane";
 import { createClient } from "@/lib/supabase/client";
@@ -49,7 +49,6 @@ export function MainScene(props: MainSceneProps) {
         }).catch(console.error);
 
         /* Camera movements */
-        //const removeCameraEventListener = cameraOrbit(camera, scene, refContainer.current);
         const removeCameraEventListener = cameraIso(camera, refContainer.current);
 
         /* Light */
