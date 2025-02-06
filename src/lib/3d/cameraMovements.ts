@@ -1,5 +1,25 @@
 import * as THREE from 'three';
 
+export function cameraIso(camera: THREE.Camera, container: HTMLDivElement | null): () => void {
+    camera.position.set(0, 10, 5);
+    camera.lookAt(0, 0, 0);
+
+    let isLocked = false; // Track if the pointer is locked
+
+    const onMouseMove = (event: MouseEvent) => {
+        if (!isLocked) return; // Only move when locked
+        moveDiagonaly(camera, event.movementX, event.movementY);
+    };
+    window.addEventListener("mousemove", onMouseMove);
+
+    const removeEventListeners = managePointerLock(container, (locked) => isLocked = locked);
+
+    return () => {
+        window.removeEventListener("mousemove", onMouseMove);
+        removeEventListeners();
+    };
+}
+
 export function cameraOrbit(camera: THREE.Camera, scene: THREE.Scene, container: HTMLDivElement | null): () => void {
     const orbit = new THREE.Object3D();
     orbit.rotation.order = 'YXZ';
@@ -18,17 +38,24 @@ export function cameraOrbit(camera: THREE.Camera, scene: THREE.Scene, container:
     };
     window.addEventListener("mousemove", onMouseMove);
 
+    const removeEventListeners = managePointerLock(container, (locked) => isLocked = locked);
+
+    return () => {
+        window.removeEventListener("mousemove", onMouseMove);
+        removeEventListeners();
+    };
+}
+
+function managePointerLock(container: HTMLDivElement | null, onPointerLockChange: (isLocked: boolean) => void): () => void {
     const onCLick = () => {
         container?.requestPointerLock();
     }
     // Click to lock cursor
     container?.addEventListener("click", onCLick);
 
-    const onPointerLockChange = () => {
-        isLocked = document.pointerLockElement === container;
-    };
+    const onPointerLockChangeLocal = () => onPointerLockChange(document.pointerLockElement === container)
     // Detect pointer lock changes
-    document.addEventListener("pointerlockchange", onPointerLockChange);
+    document.addEventListener("pointerlockchange", onPointerLockChangeLocal);
 
     const onKeydown = (event: KeyboardEvent) => {
         if (event.key === "Escape") {
@@ -37,13 +64,22 @@ export function cameraOrbit(camera: THREE.Camera, scene: THREE.Scene, container:
     };
     container?.addEventListener("keydown", onKeydown);
 
-
     return () => {
-        window.removeEventListener("mousemove", onMouseMove);
         container?.removeEventListener("click", onCLick);
-        document.removeEventListener("pointerlockchange", onPointerLockChange);
+        document.removeEventListener("pointerlockchange", onPointerLockChangeLocal);
         container?.removeEventListener("keydown", onKeydown);
-    };
+    }
+}
+
+function moveDiagonaly(camera: THREE.Camera, x: number, y: number) {
+    const angle = THREE.MathUtils.degToRad(0);
+    const v = new THREE.Vector2(x, y);
+    const xNew = v.x * Math.cos(angle) - v.y * Math.sin(angle);
+    const yNew = v.x * Math.sin(angle) + v.y * Math.cos(angle);
+    const scaleX = 0.01;
+    const scaleY = 0.01;
+    camera.position.x += xNew * scaleX;
+    camera.position.z += yNew * scaleY;
 }
 
 function rotateOrbit(x: number, y: number, orbit: THREE.Object3D, camera: THREE.Camera) {
