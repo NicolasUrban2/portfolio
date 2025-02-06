@@ -83,14 +83,18 @@ function managePointerLock(container: HTMLDivElement | null, onPointerLockChange
 }
 
 function moveDiagonaly(camera: THREE.Camera, x: number, y: number) {
+    const maxRadius = 40;
     const angle = THREE.MathUtils.degToRad(0);
     const v = new THREE.Vector2(x, y);
     const xNew = v.x * Math.cos(angle) - v.y * Math.sin(angle);
     const yNew = v.x * Math.sin(angle) + v.y * Math.cos(angle);
     const scaleX = 0.01;
     const scaleY = 0.01;
-    camera.position.x += xNew * scaleX;
-    camera.position.z += yNew * scaleY;
+    const newX = camera.position.x + xNew * scaleX;
+    const newY = camera.position.z + yNew * scaleY;
+    if((new THREE.Vector2(newX, newY)).length() > maxRadius) return;
+    camera.position.x = newX;
+    camera.position.z = newY;
 }
 
 function rotateOrbit(x: number, y: number, orbit: THREE.Object3D, camera: THREE.Camera) {
