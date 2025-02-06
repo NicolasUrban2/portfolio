@@ -24,6 +24,7 @@ export default function TextInput(props: TextInputProps) {
     return (
         type === 'textarea' ?
             <textarea
+                rows={6}
                 name={name}
                 value={inputValue}
                 placeholder={placeholder}

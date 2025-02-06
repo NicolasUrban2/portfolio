@@ -1,5 +1,6 @@
 import * as THREE from 'three';
-import { FontLoader, TextGeometry } from 'three/examples/jsm/Addons.js';
+import { TextGeometry } from 'three/examples/jsm/Addons.js';
+import { getFont } from './font';
 
 export function getMainPlane(
     welcomeText: string,
@@ -9,8 +10,7 @@ export function getMainPlane(
     const plane = new THREE.Mesh(geometry, material);
 
     /* Add text */
-    const loader = new FontLoader();
-    loader.load('/fonts/Roboto_Mono_Regular.json', function (font) {
+    getFont('/fonts/Roboto_Mono_Regular.json').then(font => {
         const textGeometry = new TextGeometry(welcomeText, {
             font: font,
             size: window.innerWidth / 4000,
@@ -20,7 +20,7 @@ export function getMainPlane(
         textGeometry.center();
         const textMesh = new THREE.Mesh(textGeometry, textMaterial);
         textMesh.rotateX(Math.PI);
-        textMesh.position.set(0, 0, -1);
+        textMesh.position.set(0, 0, 0);
         plane.add(textMesh);
     });
 

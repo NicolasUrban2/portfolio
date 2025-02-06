@@ -1,5 +1,6 @@
 'use server'
 
+import { Database } from "@/definitions/supabase";
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 
@@ -19,6 +20,7 @@ export async function edit(state: PortfolioContentsState, formData: FormData) {
     const data = {
         code: formData.get('code') as string,
         content: formData.get('content') as string,
+        locale: formData.get('locale') as Database['public']['Enums']['locales'],
     }
 
     const { error } = await supabase.from('portfolio_contents').update(data).eq('id', Number(id));

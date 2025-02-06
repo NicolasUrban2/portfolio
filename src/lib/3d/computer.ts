@@ -11,7 +11,7 @@ export async function getComputer(onProgress?: (event: ProgressEvent) => void): 
                 const computer = gltf.scene;
                 const screenLight = new THREE.PointLight(0xffffff, 5, 5);
                 screenLight.position.set(0.70, 0, 0.2);
-                screenLight.castShadow = false;
+                screenLight.castShadow = true;
                 computer.add(screenLight);
                 const towerLight = new THREE.PointLight(0xff0000, 20, 0.75, 0);
                 towerLight.position.set(-1.3, 0.7, 1.75);
