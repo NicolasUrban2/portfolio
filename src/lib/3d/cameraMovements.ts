@@ -12,10 +12,21 @@ export function cameraIso(camera: THREE.Camera, container: HTMLDivElement | null
     };
     window.addEventListener("mousemove", onMouseMove);
 
+    const onWheel = (event: WheelEvent) => {
+        if(!isLocked) return;
+        console.log(event.deltaY);
+        const scale = 0.3;
+        const newPos = camera.position.y + scale * (event.deltaY > 0 ? 1 : -1);
+        if (newPos < 1 || newPos > 20) return;
+        camera.position.y = newPos;
+    }
+    window.addEventListener("wheel", onWheel);
+
     const removeEventListeners = managePointerLock(container, (locked) => isLocked = locked);
 
     return () => {
         window.removeEventListener("mousemove", onMouseMove);
+        window.removeEventListener("wheel", onWheel);
         removeEventListeners();
     };
 }

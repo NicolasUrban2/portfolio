@@ -3,6 +3,8 @@
 import { cameraIso } from "@/lib/3d/cameraMovements";
 import { getComputer } from "@/lib/3d/computer";
 import { getMainPlane } from "@/lib/3d/plane";
+import { getServer } from "@/lib/3d/server";
+import { getGroundText } from "@/lib/3d/text";
 import { createClient } from "@/lib/supabase/client";
 import clsx from "clsx";
 import { useEffect, useRef } from "react";
@@ -46,6 +48,33 @@ export function MainScene(props: MainSceneProps) {
             const height = box.getSize(new THREE.Vector3()).y;
             computer.position.set(0, height / 2, 13);
             scene.add(computer);
+            supabase.from('portfolio_contents').select('content').eq('code', 'frontend_description').then(({ data }) => {
+                if (!data || !data.length) return;
+                const text = data[0].content ?? '';
+                getGroundText(text).then(textMesh => {
+                    textMesh.position.set(3, 0, 17);
+                    scene.add(textMesh);
+                });
+            });
+        }).catch(console.error);
+
+        /* Server */
+        let server: THREE.Object3D | null = null;
+        getServer().then(object => {
+            server = object;
+            server.castShadow = true;
+            const box = new THREE.Box3().setFromObject(server);
+            const height = box.getSize(new THREE.Vector3()).y;
+            server.position.set(22, height / 2, 5);
+            scene.add(server);
+            supabase.from('portfolio_contents').select('content').eq('code', 'backend_description').then(({ data }) => {
+                if (!data || !data.length) return;
+                const text = data[0].content ?? '';
+                getGroundText(text).then(textMesh => {
+                    textMesh.position.set(22, 0, 10);
+                    scene.add(textMesh);
+                });
+            });
         }).catch(console.error);
 
         /* Camera movements */
@@ -69,6 +98,7 @@ export function MainScene(props: MainSceneProps) {
 
         const animate = () => {
             computer?.rotateY(0.001);
+            server?.rotateY(0.001);
             renderer.render(scene, camera);
         }
         renderer.setAnimationLoop(animate);
