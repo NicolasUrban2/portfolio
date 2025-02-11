@@ -7,7 +7,6 @@ import { getMainPlane } from "@/lib/3d/plane";
 import { getServer } from "@/lib/3d/server";
 import { getGroundText } from "@/lib/3d/text";
 import { getTools } from "@/lib/3d/tools";
-import { createClient } from "@/lib/supabase/client";
 import clsx from "clsx";
 import { useEffect, useRef } from "react";
 import * as THREE from 'three';
@@ -16,11 +15,15 @@ export type MainSceneProps = {
     className?: string,
     width?: number,
     height?: number,
+    contents: {
+        [locale: string]: {
+            [code: string]: string,
+        },
+    },
 }
 
 export function MainScene(props: MainSceneProps) {
-    const { className } = props;
-    const supabase = createClient();
+    const { className, contents: { en } } = props;
 
     const refContainer = useRef<HTMLDivElement>(null);
 
@@ -38,6 +41,9 @@ export function MainScene(props: MainSceneProps) {
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
         if (refContainer.current) {
+            while (refContainer.current.firstChild) {
+                refContainer.current.removeChild(refContainer.current.firstChild);
+            }
             refContainer.current.appendChild(renderer.domElement);
         }
 
@@ -50,14 +56,14 @@ export function MainScene(props: MainSceneProps) {
             const height = box.getSize(new THREE.Vector3()).y;
             computer.position.set(0, height / 2, 13);
             scene.add(computer);
-            supabase.from('portfolio_contents').select('content').eq('code', 'frontend_description').then(({ data }) => {
-                if (!data || !data.length) return;
-                const text = data[0].content ?? '';
+
+            const text = en['3d_frontend_description'] ?? null;
+            if(text) {
                 getGroundText(text).then(textMesh => {
                     textMesh.position.set(3, 0, 17);
                     scene.add(textMesh);
                 });
-            });
+            }
         }).catch(console.error);
 
         /* Server */
@@ -69,16 +75,16 @@ export function MainScene(props: MainSceneProps) {
             const height = box.getSize(new THREE.Vector3()).y;
             server.position.set(22, height / 2, 5);
             scene.add(server);
-            supabase.from('portfolio_contents').select('content').eq('code', 'backend_description').then(({ data }) => {
-                if (!data || !data.length) return;
-                const text = data[0].content ?? '';
+
+            const text = en['3d_backend_description'] ?? null;
+            if(text) {
                 getGroundText(text).then(textMesh => {
                     textMesh.position.set(22, 0, 10);
                     scene.add(textMesh);
                 });
-            });
+            }
         }).catch(console.error);
-        
+
         /* Smartphone */
         let phone: THREE.Object3D | null = null;
         getPhone().then(object => {
@@ -87,14 +93,14 @@ export function MainScene(props: MainSceneProps) {
             const height = box.getSize(new THREE.Vector3()).y;
             phone.position.set(-22, height / 2, 5);
             scene.add(phone);
-            supabase.from('portfolio_contents').select('content').eq('code', 'mobile_dev_description').then(({ data }) => {
-                if (!data || !data.length) return;
-                const text = data[0].content ?? '';
+
+            const text = en['3d_mobile_dev_description'] ?? null;
+            if(text) {
                 getGroundText(text).then(textMesh => {
                     textMesh.position.set(-22, 0, 10);
                     scene.add(textMesh);
                 });
-            });
+            }
         });
 
         /* Tools */
@@ -105,14 +111,14 @@ export function MainScene(props: MainSceneProps) {
             const height = box.getSize(new THREE.Vector3()).y;
             tools.position.set(-10, height / 2, -25);
             scene.add(tools);
-            supabase.from('portfolio_contents').select('content').eq('code', 'tools_description').then(({ data }) => {
-                if (!data || !data.length) return;
-                const text = data[0].content ?? '';
+
+            const text = en['3d_tools_description'] ?? null;
+            if(text) {
                 getGroundText(text).then(textMesh => {
                     textMesh.position.set(-7, 0, -20);
                     scene.add(textMesh);
                 });
-            });
+            }
         });
 
         /* Camera movements */
@@ -126,13 +132,10 @@ export function MainScene(props: MainSceneProps) {
         scene.add(light);
 
         /* Plane */
-        supabase.from('portfolio_contents').select('*').eq('code', 'main_description').then(({ data }) => {
-            if (data && data.length > 0) {
-                const plane = getMainPlane(data[0].content ?? '');
-                plane.receiveShadow = true;
-                scene.add(plane);
-            }
-        });
+        const mainDescription = en['3d_main_description'] ?? '';
+        const plane = getMainPlane(mainDescription);
+        plane.receiveShadow = true;
+        scene.add(plane);
 
         const animate = () => {
             computer?.rotateY(0.001);
@@ -149,7 +152,7 @@ export function MainScene(props: MainSceneProps) {
             renderer.setAnimationLoop(null);
         };
 
-    }, [props.height, props.width, refContainer, supabase]);
+    }, [props.height, props.width, refContainer, en]);
 
 
     return (
