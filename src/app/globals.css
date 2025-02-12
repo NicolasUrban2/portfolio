@@ -27,3 +27,17 @@ body {
     text-wrap: balance;
   }
 }
+
+.markdown-content {
+  h1 {
+    @apply text-3xl my-4;
+  }
+
+  h2 {
+    @apply text-2xl my-3;
+  }
+
+  h3 {
+    @apply text-xl my-2;
+  }
+}
