@@ -23,7 +23,9 @@ export async function PortfolioContents(props: PortfolioContentsProps) {
             {data !== null ? data.map((portfolioContent, index) => (
                 <div key={portfolioContent.id}>
                     {index > 0 ? <hr /> : null}
-                    <PortfolioContentsEdit portfolioContent={portfolioContent} />
+                    <PortfolioContentsEdit
+                        portfolioContent={portfolioContent}
+                    />
                 </div>
             )) : <div>Loading...</div>}
         </div>

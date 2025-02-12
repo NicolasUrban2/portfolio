@@ -1,6 +1,7 @@
 'use client'
 
 import clsx from "clsx";
+import { MarkdownContent } from "./MarkdownContent";
 
 export type MainTextContentProps = {
     className?: string,
@@ -20,28 +21,23 @@ export function MainTextContent(props: MainTextContentProps) {
         className,
     )}>
         <article>
-            <h1 className="text-2xl mb-3">Hello there</h1>
-            <p>{en['main_description']}</p>
+            <MarkdownContent markdown={en['main_description']} />
         </article>
 
         <article>
-            <h1 className="text-2xl mb-3">Known languages</h1>
-            <p>{en['tools_description']}</p>
+            <MarkdownContent markdown={en['tools_description']} />
         </article>
 
         <article>
-            <h1 className="text-2xl mb-3">Frontend knowledge</h1>
-            <p>{en['frontend_description']}</p>
+            <MarkdownContent markdown={en['frontend_description']} />
         </article>
 
         <article>
-            <h1 className="text-2xl mb-3">Backend knowledge</h1>
-            <p>{en['backend_description']}</p>
+            <MarkdownContent markdown={en['backend_description']} />
         </article>
 
         <article>
-            <h1 className="text-2xl mb-3">Mobile development</h1>
-            <p>{en['mobile_dev_description']}</p>
+            <MarkdownContent markdown={en['mobile_dev_description']} />
         </article>
     </div>;
 }

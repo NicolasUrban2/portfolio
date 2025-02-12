@@ -39,6 +39,7 @@ export type Database = {
           code: string
           content: string | null
           created_at: string
+          display_type: Database["public"]["Enums"]["display_types"]
           id: number
           locale: Database["public"]["Enums"]["locales"]
         }
@@ -46,6 +47,7 @@ export type Database = {
           code: string
           content?: string | null
           created_at?: string
+          display_type?: Database["public"]["Enums"]["display_types"]
           id?: number
           locale?: Database["public"]["Enums"]["locales"]
         }
@@ -53,6 +55,7 @@ export type Database = {
           code?: string
           content?: string | null
           created_at?: string
+          display_type?: Database["public"]["Enums"]["display_types"]
           id?: number
           locale?: Database["public"]["Enums"]["locales"]
         }
@@ -124,6 +127,7 @@ export type Database = {
       }
     }
     Enums: {
+      display_types: "3d" | "markdown"
       locales: "fr_FR" | "en"
     }
     CompositeTypes: {
