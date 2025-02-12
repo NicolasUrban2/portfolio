@@ -26,6 +26,15 @@ export function PortfolioContentsEdit(props: PortfolioContentsEditProps) {
         'en': { label: 'English', default: portfolioContent.locale === 'en' },
         'fr_FR': { label: 'French', default: portfolioContent.locale === 'fr_FR' },
     };
+    const displayTypeOptions: {
+        [key in Database['public']['Enums']['display_types']]: {
+            label: string;
+            default?: boolean;
+        }
+    } = {
+        'markdown': { label: 'Markdown', default: portfolioContent.display_type === 'markdown' },
+        '3d': { label: '3D', default: portfolioContent.display_type === '3d' },
+    };
 
     return (
         <div className={clsx(
@@ -38,6 +47,10 @@ export function PortfolioContentsEdit(props: PortfolioContentsEditProps) {
                 <SelectInput
                     name="locale"
                     options={localeOptions}
+                />
+                <SelectInput
+                    name="display_type"
+                    options={displayTypeOptions}
                 />
                 <TextInput type="textarea" name="content" value={portfolioContent.content ?? ''} />
                 {

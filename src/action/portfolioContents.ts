@@ -21,6 +21,7 @@ export async function edit(state: PortfolioContentsState, formData: FormData) {
         code: formData.get('code') as string,
         content: formData.get('content') as string,
         locale: formData.get('locale') as Database['public']['Enums']['locales'],
+        display_type: formData.get('display_type') as Database['public']['Enums']['display_types'],
     }
 
     const { error } = await supabase.from('portfolio_contents').update(data).eq('id', Number(id));
