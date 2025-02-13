@@ -26,7 +26,7 @@ export async function edit(state: PortfolioContentsState, formData: FormData) {
 
     const { error } = await supabase.from('portfolio_contents').update(data).eq('id', Number(id));
 
-    if(error) {
+    if (error) {
         return {
             error: error.message,
         };
@@ -34,7 +34,7 @@ export async function edit(state: PortfolioContentsState, formData: FormData) {
 
     revalidatePath('/', 'layout');
     revalidatePath('/dashboard/portfolio-contents', 'layout');
-    
+
     return {
         error: null,
     }
@@ -52,7 +52,7 @@ export async function create(state: PortfolioContentsState, formData: FormData) 
 
     const { error } = await supabase.from('portfolio_contents').insert(data);
 
-    if(error) {
+    if (error) {
         return {
             error: error.message,
         };
@@ -60,8 +60,24 @@ export async function create(state: PortfolioContentsState, formData: FormData) 
 
     revalidatePath('/', 'layout');
     revalidatePath('/dashboard/portfolio-contents', 'layout');
-    
+
     return {
         error: null,
     }
+}
+
+export async function remove(id: number) {
+    const supabase = await createClient();
+
+    console.log(id);
+
+    const { error } = await supabase.from('portfolio_contents').delete().eq('id', Number(id));
+    
+    if (error) {
+        console.log(error?.message);
+        return;
+    }
+
+    revalidatePath('/', 'layout');
+    revalidatePath('/dashboard/portfolio-contents', 'layout');
 }

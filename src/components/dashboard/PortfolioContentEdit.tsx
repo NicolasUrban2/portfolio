@@ -1,6 +1,6 @@
 'use client';
 
-import { edit } from "@/action/portfolioContents";
+import { edit, remove } from "@/action/portfolioContents";
 import { Database } from "@/definitions/supabase";
 import clsx from "clsx";
 import { useActionState, useState } from "react";
@@ -9,6 +9,7 @@ import { RotateLoader } from "react-spinners";
 import SelectInput from "../input/SelectInput";
 import { MarkdownContent } from "../text/MarkdownContent";
 import { debounce } from "@/lib/util/debounce";
+import Button from "../button/Button";
 
 export type PortfolioContentsEditProps = {
     className?: string,
@@ -42,39 +43,42 @@ export function PortfolioContentsEdit(props: PortfolioContentsEditProps) {
 
     return (
         <div className={clsx(
-            'flex flex-col md:flex-row w-full gap-4',
+            'flex flex-col w-full gap-4',
             className
         )} >
-            <form action={formAction} className="flex flex-col gap-4 w-full">
-                <input name="id" type="hidden" value={portfolioContent.id} />
-                <TextInput name="code" value={portfolioContent.code} />
-                <SelectInput
-                    name="locale"
-                    options={localeOptions}
-                />
-                <SelectInput
-                    name="display_type"
-                    options={displayTypeOptions}
-                />
-                <TextInput
-                    type="textarea"
-                    name="content"
-                    value={portfolioContent.content ?? ''}
-                    onChange={debounce(setMarkdownContent, 500)}
-                />
-                {
-                    pending ? <RotateLoader className="my-4 w-full mx-auto" color="#ff5a00" size={10} /> : <button
-                        className="p-4 m-1 bg-transparent dark:shadow-black shadow-xl hover:shadow-md focus:shadow-inner rounded-lg"
-                    >
-                        Submit
-                    </button>
-                }
-                {
-                    state.error && <p className="text-red-500">{state.error}</p>
-                }
-            </form>
-            <div className="hidden md:flex w-full rounded border border-black dark:border-white">
-                <MarkdownContent className="m-4" markdown={markdownContent ?? ''} />
+            <Button className="bg-red-700 w-max" onPress={() => remove.bind(null, portfolioContent.id)()}>Delete</Button>
+            <div className="flex flex-col md:flex-row w-full gap-4">
+                <form action={formAction} className="flex flex-col gap-4 w-full">
+                    <input name="id" type="hidden" value={portfolioContent.id} />
+                    <TextInput name="code" value={portfolioContent.code} />
+                    <SelectInput
+                        name="locale"
+                        options={localeOptions}
+                    />
+                    <SelectInput
+                        name="display_type"
+                        options={displayTypeOptions}
+                    />
+                    <TextInput
+                        type="textarea"
+                        name="content"
+                        value={portfolioContent.content ?? ''}
+                        onChange={debounce(setMarkdownContent, 500)}
+                    />
+                    {
+                        pending ? <RotateLoader className="my-4 w-full mx-auto" color="#ff5a00" size={10} /> : <button
+                            className="p-4 m-1 bg-transparent dark:shadow-black shadow-xl hover:shadow-md focus:shadow-inner rounded-lg"
+                        >
+                            Submit
+                        </button>
+                    }
+                    {
+                        state.error && <p className="text-red-500">{state.error}</p>
+                    }
+                </form>
+                <div className="hidden md:flex w-full rounded border border-black dark:border-white">
+                    <MarkdownContent className="m-4" markdown={markdownContent ?? ''} />
+                </div>
             </div>
         </div>
     );
