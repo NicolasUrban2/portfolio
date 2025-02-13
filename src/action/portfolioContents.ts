@@ -39,3 +39,29 @@ export async function edit(state: PortfolioContentsState, formData: FormData) {
         error: null,
     }
 }
+
+export async function create(state: PortfolioContentsState, formData: FormData) {
+    const supabase = await createClient();
+
+    const data = {
+        code: formData.get('code') as string,
+        content: formData.get('content') as string,
+        locale: formData.get('locale') as Database['public']['Enums']['locales'],
+        display_type: formData.get('display_type') as Database['public']['Enums']['display_types'],
+    }
+
+    const { error } = await supabase.from('portfolio_contents').insert(data);
+
+    if(error) {
+        return {
+            error: error.message,
+        };
+    }
+
+    revalidatePath('/', 'layout');
+    revalidatePath('/dashboard/portfolio-contents', 'layout');
+    
+    return {
+        error: null,
+    }
+}

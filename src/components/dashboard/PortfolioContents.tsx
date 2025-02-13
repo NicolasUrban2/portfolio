@@ -1,7 +1,7 @@
 'use client'
 
 import clsx from "clsx";
-import { PortfolioContentsEdit } from "../card/PortfolioContentEdit";
+import { PortfolioContentsEdit } from "./PortfolioContentEdit";
 import { createClient } from "@/lib/supabase/client";
 import { DisplayTypeFilter } from "../filter/DisplayTypeFilter";
 import { useEffect, useState } from "react";
