@@ -1,18 +1,19 @@
 import clsx from "clsx";
 
 export type SelectInputProps = {
-    className?: string;
+    className?: string,
     name: string,
     options: {
         [value: string]: {
             label: string;
             default?: boolean;
         }
-    };
+    },
+    onChange?: (value: string) => void,
 }
 
 export default function SelectInput(props: SelectInputProps) {
-    const { className, name, options } = props;
+    const { className, name, options, onChange } = props;
 
     return (
         <select
@@ -22,6 +23,7 @@ export default function SelectInput(props: SelectInputProps) {
                 className,
             )}
             defaultValue={Object.keys(options).find(value => options[value].default)}
+            onChange={event => onChange?.(event.target.value)}
         >
             {Object.keys(options).map(value =>
                 <option
