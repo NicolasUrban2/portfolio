@@ -16,14 +16,12 @@ export type MainSceneProps = {
     width?: number,
     height?: number,
     contents: {
-        [locale: string]: {
-            [code: string]: string,
-        },
+        [code: string]: string,
     },
 }
 
 export function MainScene(props: MainSceneProps) {
-    const { className, contents: { en } } = props;
+    const { className, contents } = props;
 
     const refContainer = useRef<HTMLDivElement>(null);
 
@@ -57,8 +55,8 @@ export function MainScene(props: MainSceneProps) {
             computer.position.set(0, height / 2, 13);
             scene.add(computer);
 
-            const text = en['3d_frontend_description'] ?? null;
-            if(text) {
+            const text = contents['frontend_description'] ?? null;
+            if (text) {
                 getGroundText(text).then(textMesh => {
                     textMesh.position.set(3, 0, 17);
                     scene.add(textMesh);
@@ -76,8 +74,8 @@ export function MainScene(props: MainSceneProps) {
             server.position.set(22, height / 2, 5);
             scene.add(server);
 
-            const text = en['3d_backend_description'] ?? null;
-            if(text) {
+            const text = contents['backend_description'] ?? null;
+            if (text) {
                 getGroundText(text).then(textMesh => {
                     textMesh.position.set(22, 0, 10);
                     scene.add(textMesh);
@@ -94,8 +92,8 @@ export function MainScene(props: MainSceneProps) {
             phone.position.set(-22, height / 2, 5);
             scene.add(phone);
 
-            const text = en['3d_mobile_dev_description'] ?? null;
-            if(text) {
+            const text = contents['mobile_dev_description'] ?? null;
+            if (text) {
                 getGroundText(text).then(textMesh => {
                     textMesh.position.set(-22, 0, 10);
                     scene.add(textMesh);
@@ -112,8 +110,8 @@ export function MainScene(props: MainSceneProps) {
             tools.position.set(-10, height / 2, -25);
             scene.add(tools);
 
-            const text = en['3d_tools_description'] ?? null;
-            if(text) {
+            const text = contents['tools_description'] ?? null;
+            if (text) {
                 getGroundText(text).then(textMesh => {
                     textMesh.position.set(-7, 0, -20);
                     scene.add(textMesh);
@@ -132,7 +130,7 @@ export function MainScene(props: MainSceneProps) {
         scene.add(light);
 
         /* Plane */
-        const mainDescription = en['3d_main_description'] ?? '';
+        const mainDescription = contents['main_description'] ?? '';
         const plane = getMainPlane(mainDescription);
         plane.receiveShadow = true;
         scene.add(plane);
@@ -152,7 +150,7 @@ export function MainScene(props: MainSceneProps) {
             renderer.setAnimationLoop(null);
         };
 
-    }, [props.height, props.width, refContainer, en]);
+    }, [props.height, props.width, refContainer, contents]);
 
 
     return (
