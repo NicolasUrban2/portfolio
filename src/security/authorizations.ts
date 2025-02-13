@@ -11,6 +11,7 @@ export const authorizations: {
     '/login': () => true,
     '/error': () => true,
     '/dashboard': (roles) => roles.includes(Roles.Admin),
-    '/dashboard/portfolio-contents': (roles) => PortfolioContentsVoter.hasAccess('read', roles),
+    '/dashboard/portfolio-contents': (roles) => PortfolioContentsVoter.hasAccess('write', roles),
+    '/dashboard/portfolio-contents/create': (roles) => PortfolioContentsVoter.hasAccess('write', roles),
     '/api/markdown-to-html': () => true,
 };
