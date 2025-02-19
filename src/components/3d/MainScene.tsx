@@ -1,12 +1,8 @@
 'use client'
 
+import { addObject, addText } from "@/lib/3d/addObject";
 import { cameraIso } from "@/lib/3d/cameraMovements";
-import { getComputer } from "@/lib/3d/computer";
-import { getPhone } from "@/lib/3d/phone";
 import { getMainPlane } from "@/lib/3d/plane";
-import { getServer } from "@/lib/3d/server";
-import { getGroundText } from "@/lib/3d/text";
-import { getTools } from "@/lib/3d/tools";
 import clsx from "clsx";
 import { useEffect, useRef } from "react";
 import * as THREE from 'three';
@@ -47,77 +43,31 @@ export function MainScene(props: MainSceneProps) {
 
         /* Computer */
         let computer: THREE.Object3D | null = null;
-        getComputer().then(object => {
+        addObject('computer', scene, 0, 13).then(object => {
             computer = object;
-            computer.castShadow = true;
-            const box = new THREE.Box3().setFromObject(computer);
-            const height = box.getSize(new THREE.Vector3()).y;
-            computer.position.set(0, height / 2, 13);
-            scene.add(computer);
-
-            const text = contents['frontend_description'] ?? null;
-            if (text) {
-                getGroundText(text).then(textMesh => {
-                    textMesh.position.set(3, 0, 17);
-                    scene.add(textMesh);
-                });
-            }
-        }).catch(console.error);
+        });
+        addText(contents['frontend_description'] ?? '', scene, 3, 17);
 
         /* Server */
         let server: THREE.Object3D | null = null;
-        getServer().then(object => {
+        addObject('server', scene, 22, 5).then(object => {
             server = object;
-            server.castShadow = true;
-            const box = new THREE.Box3().setFromObject(server);
-            const height = box.getSize(new THREE.Vector3()).y;
-            server.position.set(22, height / 2, 5);
-            scene.add(server);
-
-            const text = contents['backend_description'] ?? null;
-            if (text) {
-                getGroundText(text).then(textMesh => {
-                    textMesh.position.set(22, 0, 10);
-                    scene.add(textMesh);
-                });
-            }
-        }).catch(console.error);
+        });
+        addText(contents['backend_description'] ?? '', scene, 22, 10);
 
         /* Smartphone */
         let phone: THREE.Object3D | null = null;
-        getPhone().then(object => {
+        addObject('phone', scene, -22, 5).then(object => {
             phone = object;
-            const box = new THREE.Box3().setFromObject(phone);
-            const height = box.getSize(new THREE.Vector3()).y;
-            phone.position.set(-22, height / 2, 5);
-            scene.add(phone);
-
-            const text = contents['mobile_dev_description'] ?? null;
-            if (text) {
-                getGroundText(text).then(textMesh => {
-                    textMesh.position.set(-22, 0, 10);
-                    scene.add(textMesh);
-                });
-            }
         });
+        addText(contents['mobile_dev_description'] ?? '', scene, -22, 10);
 
         /* Tools */
         let tools: THREE.Object3D | null = null;
-        getTools().then(object => {
+        addObject('tools', scene, -10, -25).then(object => {
             tools = object;
-            const box = new THREE.Box3().setFromObject(tools);
-            const height = box.getSize(new THREE.Vector3()).y;
-            tools.position.set(-10, height / 2, -25);
-            scene.add(tools);
-
-            const text = contents['tools_description'] ?? null;
-            if (text) {
-                getGroundText(text).then(textMesh => {
-                    textMesh.position.set(-7, 0, -20);
-                    scene.add(textMesh);
-                });
-            }
         });
+        addText(contents['tools_description'] ?? '', scene, -7, -20);
 
         /* Camera movements */
         const removeCameraEventListener = cameraIso(camera, refContainer.current);

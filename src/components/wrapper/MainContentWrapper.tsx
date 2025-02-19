@@ -39,7 +39,7 @@ export function MainContentWrapper(props: MainContentWrapperProps) {
                     setContents(newContents);
                 }
             });
-    }, [breakpoint]);
+    }, [breakpoint, supabase, locale]);
 
     if (display3DScene) {
         return <MainScene className={clsx('absolute', className)} contents={contents} />;
