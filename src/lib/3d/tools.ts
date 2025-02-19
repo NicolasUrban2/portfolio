@@ -9,7 +9,6 @@ export async function getTools(onProgress?: (event: ProgressEvent) => void): Pro
             '/3d_models/tools.glb',
             (gltf) => {
                 const toolbox = gltf.scene;
-                toolbox.castShadow = true;
                 toolbox.receiveShadow = true;
                 toolbox.scale.set(2, 2, 2);
                 

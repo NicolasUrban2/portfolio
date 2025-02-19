@@ -36,5 +36,9 @@ export function MainTextContent(props: MainTextContentProps) {
         <article>
             <MarkdownContent markdown={contents['mobile_dev_description']} />
         </article>
+
+        <article>
+            <MarkdownContent markdown={contents['contact_description']} />
+        </article>
     </div>;
 }
