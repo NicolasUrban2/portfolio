@@ -4,6 +4,7 @@ import { getPhone } from './phone';
 import { getTools } from './tools';
 import { getServer } from './server';
 import { getGroundText } from './text';
+import { getContactPhone } from './contactPhone';
 
 const Objects: {
     [name: string]: (onProgress?: (event: ProgressEvent) => void) => Promise<THREE.Object3D>,
@@ -12,6 +13,7 @@ const Objects: {
     phone: getPhone,
     tools: getTools,
     server: getServer,
+    contactPhone: getContactPhone,
 };
 
 export async function addObject(
@@ -23,7 +25,6 @@ export async function addObject(
     onProgress?: (event: ProgressEvent) => void,
 ): Promise<THREE.Object3D> {
     const object = await Objects[name](onProgress);
-    object.castShadow = true;
     if (!y) {
         const box = new THREE.Box3().setFromObject(object);
         y = (box.getSize(new THREE.Vector3()).y) / 2;
@@ -40,8 +41,9 @@ export async function addText(
     x: number,
     z: number,
     y?: number,
+    centered?: boolean,
 ): Promise<THREE.Object3D> {
-    const textMesh = await getGroundText(text);
+    const textMesh = await getGroundText(text, centered);
     textMesh.position.set(x, y ?? 0, z);
     scene.add(textMesh);
 
