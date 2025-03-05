@@ -69,17 +69,24 @@ export function MainScene(props: MainSceneProps) {
 
         /* Tools */
         let tools: THREE.Object3D | null = null;
-        addObject('tools', scene, -25, -25).then(object => {
+        addObject('tools', scene, -20, -15).then(object => {
             tools = object;
         });
-        addText(contents['tools_description'] ?? '', scene, -25, -20, undefined, true);
+        addText(contents['tools_description'] ?? '', scene, -20, -10, undefined, true);
 
         /* Contact phone */
         let contactPhone: THREE.Object3D | null = null;
-        addObject('contactPhone', scene, 25, -25).then(object => {
+        addObject('contactPhone', scene, 0, -25).then(object => {
             contactPhone = object;
         });
-        addText(contents['contact_description'] ?? '', scene, 25, -20, undefined, true);
+        addText(contents['contact_description'] ?? '', scene, 0, -20, undefined, true);
+
+        /* Diploma */
+        let diploma: THREE.Object3D | null = null;
+        addObject('diploma', scene, 20, -15).then(object => {
+            diploma = object;
+        });
+        addText(contents['diploma_description'] ?? '', scene, 20, -10, undefined, true);
 
         /* Camera movements */
         const removeCameraEventListener = cameraIso(camera, refContainer.current);
@@ -104,6 +111,7 @@ export function MainScene(props: MainSceneProps) {
             phone?.rotateY(0.001);
             tools?.rotateY(0.001);
             contactPhone?.rotateY(0.001);
+            diploma?.rotateY(0.001);
 
             animateFakeButton(camera);
 

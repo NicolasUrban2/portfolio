@@ -5,6 +5,7 @@ import { getTools } from './tools';
 import { getServer } from './server';
 import { getGroundText } from './text';
 import { getContactPhone } from './contactPhone';
+import { getDiploma } from './diploma';
 
 const Objects: {
     [name: string]: (onProgress?: (event: ProgressEvent) => void) => Promise<THREE.Object3D>,
@@ -14,6 +15,7 @@ const Objects: {
     tools: getTools,
     server: getServer,
     contactPhone: getContactPhone,
+    diploma: getDiploma,
 };
 
 export async function addObject(
