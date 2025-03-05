@@ -14,7 +14,7 @@ export async function getPhone(onProgress?: (event: ProgressEvent) => void): Pro
                 
                 phone.rotateX(-Math.PI / 4);
                 
-                const light = new THREE.PointLight(0xffffff, 3, 5, 1);
+                const light = new THREE.PointLight(0xffffff, 10, 10, 1);
                 light.position.set(0, 0, 0.2);
                 light.castShadow = true;
                 phone.add(light);
