@@ -1,6 +1,7 @@
 'use client'
 
 import { addObject, addText } from "@/lib/3d/addObject";
+import { getButton } from "@/lib/3d/button";
 import { cameraIso } from "@/lib/3d/cameraMovements";
 import { getMainPlane } from "@/lib/3d/plane";
 import clsx from "clsx";
@@ -40,6 +41,10 @@ export function MainScene(props: MainSceneProps) {
             }
             refContainer.current.appendChild(renderer.domElement);
         }
+
+        /* Fake button */
+        const { object: fakeButton, animate: animateFakeButton } = getButton('Explore');
+        scene.add(fakeButton);
 
         /* Computer */
         let computer: THREE.Object3D | null = null;
@@ -99,6 +104,9 @@ export function MainScene(props: MainSceneProps) {
             phone?.rotateY(0.001);
             tools?.rotateY(0.001);
             contactPhone?.rotateY(0.001);
+
+            animateFakeButton(camera);
+
             renderer.render(scene, camera);
         }
         renderer.setAnimationLoop(animate);
